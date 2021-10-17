@@ -1,5 +1,5 @@
 = Create and Configure a Oracle VM Instance in the Oracle Cloud
-
+:imagesdir: images
 
 == Create an Oracle VM Instance in Oracle Cloud
 
@@ -27,6 +27,8 @@ image:oracle-cloud-006.png[width=80%]
 
 .Choose Ubuntu Minimal
 image:oracle-cloud-007.png[width=80%]
+
+image:oracle-cloud-007a.png[width=80%]
 
 .Upload the public key from your local .ssh-folder
 image:oracle-cloud-008.png[width=80%]
@@ -93,30 +95,49 @@ ssh <host-alias-from-config-file>
 ssh oravm
 ----
 
-.Result
+.eventually add to know_hosts
+[%collapsible]
+====
 ----
-Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-1037-oracle x86_64)
+The authenticity of host '152.70.177.244 (152.70.177.244)' can't be established.
+ECDSA key fingerprint is SHA256:XWlB+O8xddgRgfQyPPY5CPvf534gd37Nry/fexByJgk.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '152.70.177.244' (ECDSA) to the list of known hosts.
+----
+====
+
+.Successful login
+----
+Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.11.0-1017-oracle x86_64)
 
  * Documentation:  https://help.ubuntu.com
  * Management:     https://landscape.canonical.com
  * Support:        https://ubuntu.com/advantage
-
- * Introducing self-healing high availability clusters in MicroK8s.
-   Simple, hardened, Kubernetes for production, from RaspberryPi to DC.
-
-     https://microk8s.io/high-availability
 
 This system has been minimized by removing packages and content that are
 not required on a system that users do not log into.
 
 To restore this content, you can run the 'unminimize' command.
 
-0 updates can be installed immediately.
-0 of these updates are security updates.
+0 updates can be applied immediately.
 
-Last login: Tue Mar 16 13:44:59 2021 from 193.170.159.99
-ubuntu@instance-20210316-1435:~$
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
 ----
+
+
+
 
 [TIP]
 ====
@@ -125,7 +146,7 @@ ubuntu@instance-20210316-1435:~$
 * to update your system:
 +
 ----
-sudo apt update && sudo apt -y dist-upgrade && sudo apt autoremove
+sudo apt update && sudo apt -y dist-upgrade && sudo apt autoremove -y
 ----
 ====
 
@@ -151,7 +172,7 @@ ins github den private github-key eintragen
 
 == Verbindung in Filezilla einrichten
 
-* Filezilla:
+* https://filezilla-project.org/download.php?type=client[Filezilla, window="_blank"]:
 
 .you have to use the private key
 image:ssh-in-filezilla-002.png[]
@@ -164,10 +185,10 @@ There are different options:
 
 * openjdk
 * Oracle JDK
-* adoptopenjdk
+* https://adoptium.net/installation.html#x64_linux-jdk[Eclipse Adoptium]
 * ...
 
-We choose https://adoptopenjdk.net/installation.html?variant=openjdk15&jvmVariant=hotspot#x64_linux-jdk[adoptopenjdk]:
+We choose openjdk:
 
 .First login
 [source,bash]
@@ -178,20 +199,11 @@ ssh oravm
 .add the package manager sources for adoptopenjdk and install the jdk
 [source,bash]
 ----
-# install missing dependencies
-sudo apt -y install wget apt-transport-https gnupg
-
-# install the gpg key
-wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
-
-# make an entry in the package manager sources - file
-echo "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/adoptopenjdk.list
-
-# update the package lists to get the adoptopenjdk packages entries
-sudo apt update
+# which jdk-versions are available?
+sudo apt list | grep jdk
 
 # install the jdk
-sudo apt -y install adoptopenjdk-15-hotspot
+sudo apt -y install openjdk-17-jdk-headless
 
 # now check the java version
 java -version
@@ -220,13 +232,67 @@ sudo apt -y install \
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 echo \
-  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 
 sudo apt update
 
 sudo apt -y install docker-ce docker-ce-cli containerd.io
+
+sudo docker version
 ----
+
+.output
+[%collapsible]
+====
+----
+Client: Docker Engine - Community
+ Version:           20.10.9
+ API version:       1.41
+ Go version:        go1.16.8
+ Git commit:        c2ea9bc
+ Built:             Mon Oct  4 16:08:29 2021
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          20.10.9
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.16.8
+  Git commit:       79ea9d3
+  Built:            Mon Oct  4 16:06:37 2021
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.4.11
+  GitCommit:        5b46e404f6b9f661a205e28d59c982d3634148f8
+ runc:
+  Version:          1.0.2
+  GitCommit:        v1.0.2-0-g52b36a2
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+----
+====
+
+
+== Post-Installation Steps
+
+[source,bash]
+----
+#create a group named docker
+sudo groupadd docker
+
+# add user "ubuntu" to the docker-group
+sudo usermod -aG docker $USER
+
+# Log out and log back or use "newgrp docker"
+newgrp docker
+----
+
 
 
 == Install docker-compose
@@ -236,9 +302,10 @@ https://docs.docker.com/compose/install/
 
 [source,bash]
 ----
-sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 sudo chmod +x /usr/local/bin/docker-compose
 
 docker-compose --version
 ----
+

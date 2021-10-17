@@ -1,0 +1,74 @@
+= LeoCloud - Intro
+firstname lastname
+1.0.0, yyyy-mm-dd: Some notes
+ifndef::imagesdir[:imagesdir: images]
+//:toc-placement!:  // prevents the generation of the doc at this position, so it can be printed afterwards
+:sourcedir: ../src/main/java
+:icons: font
+:sectnums:    // Nummerierung der Überschriften / section numbering
+:toc: left
+:doctype: book
+
+
+== What to do?
+
+* First we will create a local .ssh - key pair
+* Second we will create an https://www.oracle.com/cloud/free/[Oracle VM instance]
+* Afterwards we will login into the Oracle VM instance (called `oravm`)
+per ssh-session w/o using username and password.
+
+We have to use a ssh.key-pair. The public key must be transferred into the .ssh-folder on the remote server.
+
+[plantuml]
+----
+include::plantuml/ssh-overview.puml[]
+----
+
+* Steps to do
+. create local ssh-key-pair
+. create an Oracle VM instance (`oravm`)
+. create a config-file in .ssh
+. login into VM instance
+
+
+
+// Create a local .ssh-key pair for HTL Leonding
+
+include::create-ssh-keys.adoc[]
+
+
+include::create-oravm.adoc[]
+
+
+
+* OraVM einrichten
+
+* github secret einrichten
+** SSH_SERVER_PRIVATE_KEY
+** SERVER
+** SERVER_USER
+** REGISTRY_ACCESS_TOKEN
+
+* Ausführen der gh-actions
+
+[source, shell]
+----
+sudo -i
+cd /usr/local/bin
+ls
+docker-compose up --build
+----
+
+* nc ... netcat -> schaut, ob ein Port verfügbar ist
+
+== Docker Grundlagen
+== docker-compose
+== oravm ist leer
+=== ssh-keys
+* Beispiel aus https://github.com/caberger/install-ssh-key
+
+=== gh-actions Grundlagen
+== mit gh-actions auf oravm hello-world-quarkus
+=== Push und pull manuell
+
+== caberger/leocloud

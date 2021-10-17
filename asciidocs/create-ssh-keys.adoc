@@ -1,0 +1,88 @@
+//= Create and Configure a Oracle VM Instance in the Oracle Cloud
+//Thomas W. Stütz
+//1.0.1, 2021-03-13: create a vm
+//
+//ifndef::imagesdir[:imagesdir: images]
+//:toc-placement!:  // prevents the generation of the doc at this position, so it can be printed afterwards
+//:sourcedir: ../src/main/java
+//:icons: font
+//:sectnums:    // Nummerierung der Überschriften / section numbering
+//:toc: left
+//:toclevels: 5
+//:experimental: true
+//:linkattrs:   // so window="_blank" will be executed
+
+
+== Create a local ssh - key pair for HTL Leonding
+
+We create an own key pair for our work at HTL Leonding college
+
+* htl_key
+* htl_key.pub
+
+.Command for generating the ssh key pair (https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key[github doku, window="_blank"])
+[source,bash]
+----
+cd ~/.ssh
+ssh-keygen -t ed25519
+----
+
+.We have to give a name to the key pair -> `htl_key`, but *no* passphrase (for simplicity)
+----
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/Users/stuetz/.ssh/id_ed25519): htl_key
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in htl_key.
+Your public key has been saved in htl_key.pub.
+The key fingerprint is:
+SHA256:PRR6jbBp8uQRBxQFdedsda1gCf4zi+leJuKVEYk1wIg stuetz@Toms-MBP-2020
+The key's randomart image is:
++--[ED25519 256]--+
+|   . o.o@BO++    |
+|  E . .+ %.O .   |
+|      o @ * +    |
+|       * B o     |
+|        S * .    |
+|         = =     |
+|      . * +      |
+|     . + +       |
+|      ..o        |
++----[SHA256]-----+
+----
+
+[source,bash]
+----
+ls -lah
+----
+
+----
+total 72
+drwx------   8 stuetz  staff   256B Oct 17 11:56 .
+drwxr-xr-x+ 59 stuetz  staff   1.8K Oct 17 12:05 ..
+-rwx------@  1 stuetz  staff   224B Oct 10 18:52 config
+-rw-------   1 stuetz  staff   432B Oct 17 11:56 htl_key
+-rw-r--r--   1 stuetz  staff   112B Oct 17 11:56 htl_key.pub
+-rwx------@  1 stuetz  staff   1.6K Mar 15  2014 id_rsa
+-rwx------@  1 stuetz  staff   415B Mar 15  2014 id_rsa.pub
+-rw-r--r--   1 stuetz  staff   581B Oct  7 10:41 known_hosts
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

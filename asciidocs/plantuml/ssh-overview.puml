@@ -1,0 +1,17 @@
+@startuml
+left to right direction
+node "local machine" as localpc {
+  folder ".ssh" as sshlocal {
+    file htl_key
+    file htl_key.pub
+  }
+}
+
+node oravm <<Virtual Machine>> {
+  folder ".ssh" as sshremote {
+    file "htl_key.pub" as remotepub
+  }
+}
+
+sshlocal ---> sshremote: ssh-session
+@enduml

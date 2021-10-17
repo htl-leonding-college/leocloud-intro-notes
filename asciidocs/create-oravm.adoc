@@ -1,4 +1,3 @@
-= Create and Configure a Oracle VM Instance in the Oracle Cloud
 :imagesdir: images
 
 == Create an Oracle VM Instance in Oracle Cloud
@@ -95,7 +94,7 @@ ssh <host-alias-from-config-file>
 ssh oravm
 ----
 
-.eventually add to know_hosts
+.eventually add to known_hosts
 [%collapsible]
 ====
 ----
